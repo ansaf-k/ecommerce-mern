@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import { Routes, Route } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           </Routes>
         </Container>
       </main>
+      <Footer />
     </>
   )
 }

@@ -10,7 +10,7 @@ app.use(express.json());
 const port = 5000;
 
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send("Ec World!");
 });
 
 app.use("/api/products", productRoutes);
