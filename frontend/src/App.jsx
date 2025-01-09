@@ -7,6 +7,9 @@ import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import Footer from "./components/Footer";
 import CartScreen from "./screens/CartScreen";
+import { ToastContainer } from "react-toastify";
+import RegisterScreen from "./screens/RegisterScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 const App = () => {
   return (
@@ -15,11 +18,14 @@ const App = () => {
       <main className="py-3">
         <Container>
           <Routes>
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
             <Route path="/" element={<HomeScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} />
             <Route path="/cart" element={<CartScreen />} />
           </Routes>
         </Container>
+        <ToastContainer />
       </main>
       <Footer />
     </>

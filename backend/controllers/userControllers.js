@@ -34,11 +34,12 @@ const createUser = asyncHandler(async (req, res, next) => {
 
 const authUser = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
+    console.log('object');
 
     const user = await User.findOne({ email });
     if (User && (await user.matchPassword(password))) {
 
-        let token = jwt.sign({ userId: user._id }, '12345', { expiresIn: "1d" });
+        let token = jwt.sign({ userId: user._id }, "12345", { expiresIn: "1d" });
         res.cookie("jwt", token, {
             httpOnly: true,
             secure: false,
@@ -57,8 +58,15 @@ const authUser = asyncHandler(async (req, res, next) => {
     }
 });
 
+const logout = asyncHandler(async(req, res) => {
+    res.cookie("jwt","",{
+        httpOnly: true,
+        expiresIn: new Date(0),
+    });
+    res.status(200).json({ message: "Logged out successfully" });
+});
+
 const getUsers = () => { };
-const logout = () => { };
 const getUserProfile = () => { };
 
 export { createUser, authUser, logout, getUserProfile };

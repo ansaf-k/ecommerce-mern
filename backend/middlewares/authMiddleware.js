@@ -1,4 +1,4 @@
-import jwt, { decode } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import User from "../model/userModel.js";
 
 const protect = async (req, res, next) => {
@@ -8,7 +8,7 @@ const protect = async (req, res, next) => {
         if (token) {
             try {
                 const decoded = jwt.verify(token, "12345");
-                console.log(decoded);
+                // console.log(decoded);
                 req.user = await User.findById(decoded.userId).select("-password");
                 next();
             } catch (error) {
