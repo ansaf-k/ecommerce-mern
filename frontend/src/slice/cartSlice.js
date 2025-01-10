@@ -1,12 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { updateCart } from "../utils/cartUtils";
 
 const initialState = localStorage.getItem("cart")
     ? JSON.parse(localStorage.getItem("cart"))
     : { cartItems: [] };
-
-const addDecimal = (num) => {
-    return num.toFixed(2);
-}
 
 const cartSlice = createSlice({
     name: 'cart',
@@ -25,56 +22,17 @@ const cartSlice = createSlice({
                 state.cartItems = [...state.cartItems, item];
             }
 
-            // calculate the items price
-            state.itemsPrice = addDecimal(
-                state.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-            );
-
-            // calculate the shipping price,if items price is greate than 100, shipping price is free else shipping prise is 100
-            state.shippinPrice = addDecimal(state.itemsPrice > 100 ? 0 : 10);
-
-            //calculate the tax price
-            state.taxPrice = addDecimal(0.15 * state.itemsPrice);
-
-            // CALCULATE THE TOTAL
-            state.totalPrice =
-                Number(state.itemsPrice) +
-                Number(state.shippinPrice) +
-                Number(state.taxPrice);
-
-            localStorage.setItem("cart", JSON.stringify(state));
+            return updateCart(state);
         },
         removeItemFromCart: (state, action) => {
-            
             state.cartItems = state.cartItems.filter((x) => x._id !== action.payload);
-            // calculate the items price
-            state.itemsPrice = addDecimal(
-                state.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-            );
-            // calculate the shipping price,if items price is greate than 100, shipping price is free else shipping prise is 100
-            state.shippinPrice = addDecimal(state.itemsPrice > 100 ? 0 : 10);
+            return updateCart(state);
+        },
+        resetCart: (state) => (state = initialState),
 
-            //calculate the tax price
-            state.taxPrice = addDecimal(0.15 * state.itemsPrice);
-
-            // CALCULATE THE TOTAL
-            state.totalPrice =
-                Number(state.itemsPrice) +
-                Number(state.shippinPrice) +
-                Number(state.taxPrice);
-
-
-            if (state.cartItems.length === 0) {
-                localStorage.clear();
-            } else {
-                localStorage.setItem('cart', JSON.stringify(state));
-            }
-
-
-        }
     },
 })
 
-export const { addToCart, removeItemFromCart } = cartSlice.actions;
+export const { addToCart, removeItemFromCart, resetCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

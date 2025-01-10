@@ -1,33 +1,58 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 
-import { useRegisterUserMutation } from "../slice/userSlice";
+import { useRegisterUserMutation } from "../slice/userApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "../slice/authSlice";
 
 const RegisterScreen = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [ registerUser, { isLoading }] = useRegisterUserMutation();
+
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { userInfo } = useSelector((state) => state.auth);
+    const [registerUser, { isLoading }] = useRegisterUserMutation();
 
     const submitHandler = async (e) => {
         e.preventDefault();
 
-        try {
-            await registerUser({ name, email, password }).unwrap();
-            setName("");
-            setEmail("");
-            setPassword("");
-            setConfirmPassword("");
-            navigate("/login");
-        } catch (error) {
-            toast.error(error.data.message);
+        if (password !== confirmPassword) {
+            toast.error("Passwords do not match");
+        } else {
+            try {
+                const res = await registerUser({ name, email, password }).unwrap();
+                console.log(res);
+                dispatch(setCredentials({ ...res }));
+                setName("");
+                setEmail("");
+                setPassword("");
+                setConfirmPassword("");
+                navigate("/login");
+            } catch (error) {
+                toast.error(error.data.message || error.error);
+            }
         }
     };
+
+    const { search } = useLocation();
+    console.log(search);
+    const sp = new URLSearchParams(search);
+    console.log(sp);
+    const redirect = sp.get("redirect") || '/';
+    console.log(redirect);
+
+    useEffect(() => {
+        if (userInfo) {
+            navigate(redirect);
+        }
+    }, [userInfo, navigate, redirect])
 
     return (
         <Container>
@@ -75,13 +100,12 @@ const RegisterScreen = () => {
                 <Button disabled={isLoading} type="submit" variant="primary">
                     Register
                 </Button>
-
                 {isLoading && <Loader />}
             </Form>
 
             <Row className="py-3">
                 <Col>
-                    Already have an account? <Link to={"/login"}>Login</Link>
+                    Already have an account? <Link to={`/login/?redirect=${redirect}`}>Login</Link>
                 </Col>
             </Row>
         </Container>
