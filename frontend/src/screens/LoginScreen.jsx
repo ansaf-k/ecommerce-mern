@@ -12,7 +12,7 @@ function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const { userInfo } = useSelector((state) => state.auth)
+    const userInfo = useSelector((state) => state.auth.userInfo)
     const [login, { isLoading }] = useLoginMutation();
 
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ function LoginScreen() {
         e.preventDefault();
         try {
             const res = await login({ email, password }).unwrap();
-            dispatch(setCredentials(res));
+            dispatch(setCredentials({ ...res }));
             navigate("/")
         } catch (error) {
             toast.error(error?.data?.message);
@@ -31,11 +31,11 @@ function LoginScreen() {
     };
 
     const { search } = useLocation();
-    console.log(search);
+    console.log("search", search);
     const sp = new URLSearchParams(search);
-    console.log(sp);
+    console.log("sp", sp);
     const redirect = sp.get("redirect") || '/';
-    console.log(redirect);
+    console.log("redirect", redirect);
 
     useEffect(() => {
         if (userInfo) {

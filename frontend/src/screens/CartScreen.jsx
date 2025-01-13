@@ -11,17 +11,21 @@ const CartScreen = () => {
     const navigate = useNavigate();
     const { cartItems } = useSelector((state) => state.cart);
 
+
     const addToCartHandler = (product, qty) => {
         dispatch(addToCart({ ...product, qty }));
     };
+
 
     const removeItemHandler = (id) => {
         dispatch(removeItemFromCart(id));
     }
 
+
     const checkOutHandler = () => {
         navigate("/login?redirect=/shipping")
     }
+
 
     return (
         <Row>
@@ -59,6 +63,7 @@ const CartScreen = () => {
                                             ))}
                                         </Form.Control>
                                     </Col>
+                                    
                                     <Col md={2}>
                                         <Button onClick={() => removeItemHandler(item._id)} type="button" variant="light">
                                             <FaTrash />

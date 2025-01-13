@@ -4,14 +4,17 @@ import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import cookieparser from 'cookie-parser';
 import { errorHandler, notFound } from './middlewares/errorHandler.js';
+import dotenv from 'dotenv';
 
-
+dotenv.config();
 connectDB();
+
 const app = express();
 
 app.use(cookieparser());
 app.use(express.json());
-const port = 5000;
+
+const port = process.env.PORT;
 
 app.get("/", (req, res) => {
     res.send("Ec World!");

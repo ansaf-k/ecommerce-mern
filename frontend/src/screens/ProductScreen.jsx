@@ -14,11 +14,12 @@ const ProductScreen = () => {
   const { id: productId } = useParams();
   const { data: product, isLoading, error } = useGetProductQuery(productId);
   const navigate = useNavigate()
+  console.log(productId);
 
   const dispatch = useDispatch();
 
   const addToCartHandler = () => {
-    dispatch(addToCart({...product,qty}));
+    dispatch(addToCart({ ...product, qty }));
     navigate('/cart');
   }
 

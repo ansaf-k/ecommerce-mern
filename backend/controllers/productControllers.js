@@ -3,7 +3,6 @@ import Product from "../model/productModel.js";
 
 const getProducts = asyncHandler(async (req, res, next) => {
     const products = await Product.find();
-    // console.log(products);
     res.json(products)
 });
 

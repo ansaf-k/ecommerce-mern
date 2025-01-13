@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 
 import { useRegisterUserMutation } from "../slice/userApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../slice/authSlice";
+import FormContainer from "../components/FormContainer";
 
 const RegisterScreen = () => {
     const [name, setName] = useState("");
@@ -28,20 +29,19 @@ const RegisterScreen = () => {
         } else {
             try {
                 const res = await registerUser({ name, email, password }).unwrap();
-                console.log(res);
                 dispatch(setCredentials({ ...res }));
                 setName("");
                 setEmail("");
                 setPassword("");
                 setConfirmPassword("");
-                navigate("/login");
+                navigate("/");
             } catch (error) {
-                toast.error(error.data.message || error.error);
+                toast.error(error?.data?.message || error.error);
             }
         }
     };
 
-    const { search } = useLocation();
+    const { search } = useLocation();  // for redirection to shippingPage
     console.log(search);
     const sp = new URLSearchParams(search);
     console.log(sp);
@@ -55,7 +55,7 @@ const RegisterScreen = () => {
     }, [userInfo, navigate, redirect])
 
     return (
-        <Container>
+        <FormContainer>
             <h1>Register</h1>
             <Form onSubmit={submitHandler}>
                 <Form.Group className="my-2" controlId="name">
@@ -109,7 +109,7 @@ const RegisterScreen = () => {
                     <Link to={`/login/?redirect=${redirect}`}>Login</Link>
                 </Col>
             </Row>
-        </Container>
+        </FormContainer>
     );
 };
 

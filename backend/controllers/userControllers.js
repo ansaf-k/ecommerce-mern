@@ -1,7 +1,6 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import User from "../model/userModel.js";
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import generateToken from "../utils/generateToken.js";
 
 const registerUser = asyncHandler(async (req, res, next) => {

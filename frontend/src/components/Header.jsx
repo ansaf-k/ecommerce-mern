@@ -42,7 +42,7 @@ const Header = () => {
                   </Badge>
                 )}
               </Nav.Link>
-              {userInfo ? (
+              {userInfo?.name ? (
                 <NavDropdown title={userInfo.name} id="username">
                   <Nav.Link as={Link} to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
