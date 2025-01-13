@@ -11,10 +11,12 @@ const PaymentScreen = () => {
   const { shippingAddress } = useSelector(state => state.cart)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("PayPal");
+
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(paymentHandler(paymentMethod))
+    navigate("/placeorder")
   }
 
 
@@ -22,7 +24,6 @@ const PaymentScreen = () => {
     if (!shippingAddress.address) {
       navigate("/cart")
     }
-
   }, [navigate, shippingAddress])
 
   return (

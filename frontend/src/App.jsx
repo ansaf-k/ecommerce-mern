@@ -14,6 +14,8 @@ import ShippingScreen from "./screens/ShipppingScreen";
 import CheckoutSteps from "./components/CheckOutStep";
 import PaymentScreen from "./screens/PaymentScreen";
 import PrivetRoutes from "./components/PrivateRoutes";
+import PlaceOrderScreen from "./screens/PlaceOrderScreen";
+import OrderScreen from "./screens/OrderScreen";
 
 const App = () => {
   return (
@@ -30,6 +32,8 @@ const App = () => {
             <Route path="" element={<PrivetRoutes />}>
               <Route path="/shipping" element={<ShippingScreen />} />
               <Route path="/payment" element={<PaymentScreen />} />
+              <Route path="/placeorder" element={<PlaceOrderScreen />} />
+              <Route path="/order/:id" element={<OrderScreen />} />
             </Route>
             <Route path="/checkoutSteps" element={<CheckoutSteps />} />
           </Routes>

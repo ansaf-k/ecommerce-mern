@@ -12,9 +12,9 @@ const updateCart = (state) => {
     state.taxPrice = addDecimal(0.15 * state.itemsPrice);
     // calculte total price
     state.totalPrice =
-        Number(state.itemsPrice) +
-        Number(state.shippingPrice) +
-        Number(state.taxPrice);
+        addDecimal(Number(state.itemsPrice) +
+            Number(state.shippingPrice) +
+            Number(state.taxPrice));
     // save to localstorage in order to save the data from lost when page is refreshed
     localStorage.setItem("cart", JSON.stringify(state));
     return state;
