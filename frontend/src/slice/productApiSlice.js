@@ -12,6 +12,7 @@ const productApi = apiSlice.injectEndpoints({
         url: `/api/products/${id}`,
       }),
     }),
+    
   }),
 })
 

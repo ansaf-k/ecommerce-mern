@@ -7,7 +7,6 @@ import Message from "../components/Message.jsx";
 
 const HomeScreen = () => {
   const { data: products ,isLoading, error} = useGetProductsQuery();
-  console.log(products);
 
   return (
     <>

@@ -6,10 +6,8 @@ import { useGetOrdersByIdQuery } from "../slice/orderApiSlice";
 
 const OrderScreen = () => {
     const { id } = useParams();
-    console.log(id);
 
     const { isLoading, data: order, error } = useGetOrdersByIdQuery(id);
-    console.log(order);
 
     return isLoading ? (
         <Loader />

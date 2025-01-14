@@ -11,11 +11,15 @@ import { ToastContainer } from "react-toastify";
 import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 import ShippingScreen from "./screens/ShipppingScreen";
-import CheckoutSteps from "./components/CheckOutStep";
 import PaymentScreen from "./screens/PaymentScreen";
 import PrivetRoutes from "./components/PrivateRoutes";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import AdminRoutes from "./components/AdminRoutes";
+import UserList from "./screens/admin/UserListScreen";
+import OrderListScreen from "./screens/admin/OrderListScreen";
+import ProductListScreen from "./screens/admin/ProductListScreen";
 
 const App = () => {
   return (
@@ -29,13 +33,23 @@ const App = () => {
             <Route path="/" element={<HomeScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} />
             <Route path="/cart" element={<CartScreen />} />
+
+            {/* private routes */}
             <Route path="" element={<PrivetRoutes />}>
               <Route path="/shipping" element={<ShippingScreen />} />
               <Route path="/payment" element={<PaymentScreen />} />
               <Route path="/placeorder" element={<PlaceOrderScreen />} />
               <Route path="/order/:id" element={<OrderScreen />} />
+              <Route path="/profile" element={<ProfileScreen />} />
             </Route>
-            <Route path="/checkoutSteps" element={<CheckoutSteps />} />
+
+            {/* admin routes */}
+            <Route path="" element={<AdminRoutes />}>
+              <Route path="/admin/orderlist" element={<OrderListScreen />} />
+              <Route path="/admin/productlist" element={<ProductListScreen />} />
+              <Route path="/admin/userlist" element={<UserList />} />
+            </Route>
+
           </Routes>
         </Container>
         <ToastContainer />

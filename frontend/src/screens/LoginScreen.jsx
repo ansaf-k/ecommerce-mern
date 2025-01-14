@@ -31,11 +31,8 @@ function LoginScreen() {
     };
 
     const { search } = useLocation();
-    console.log("search", search);
     const sp = new URLSearchParams(search);
-    console.log("sp", sp);
     const redirect = sp.get("redirect") || '/';
-    console.log("redirect", redirect);
 
     useEffect(() => {
         if (userInfo) {

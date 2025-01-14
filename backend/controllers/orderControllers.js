@@ -41,13 +41,18 @@ const getMyOrders = async (req, res) => {
     res.json(orders);
 }
 
-const getOrdersById = async (req, res)=>{
+const getOrders = async (req, res) => {
+    const orders = await Order.find();
+    res.json(orders);
+}
+
+const getOrdersById = async (req, res) => {
     const order = await Order.findById(req.params.id).populate(
-        "user", 
+        "user",
         "name email"
     );
 
-    if(order) {
+    if (order) {
         res.json(order);
     } else {
         res.status(404);
@@ -55,4 +60,4 @@ const getOrdersById = async (req, res)=>{
     }
 };
 
-export { createOrder, getMyOrders, getOrdersById };
+export { createOrder, getMyOrders, getOrdersById, getOrders };
