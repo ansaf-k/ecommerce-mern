@@ -13,13 +13,13 @@ const registerUser = asyncHandler(async (req, res, next) => {
         throw new Error("User already exists");
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const encryptedPassword = await bcrypt.hash(password, salt);
+    // const salt = await bcrypt.genSalt(10);
+    // const encryptedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({
         name,
         email,
-        password: encryptedPassword,
+        password,
     });
 
     if (user) {
@@ -68,4 +68,23 @@ const logout = async (req, res) => {
 const getUsers = () => { };
 const getUserProfile = () => { };
 
-export { registerUser, authUser, logout, getUserProfile };
+const updateUserProfile = async (req, res) => {
+    const { name, email, password } = req.body;
+
+    const user = await User.findById(req.user.userId);
+
+    if (user) {
+        user.name = name || user.name;
+        user.email = email || user.email;
+
+        if (password) {
+            user.password = password;
+        }
+        const updateUser = await user.save()
+    } else {
+        res.status(404)
+        throw new Error("User not found");
+    }
+}
+
+export { registerUser, authUser, logout, getUserProfile, updateUserProfile };
