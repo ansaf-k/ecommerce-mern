@@ -20,6 +20,7 @@ import AdminRoutes from "./components/AdminRoutes";
 import UserList from "./screens/admin/UserListScreen";
 import OrderListScreen from "./screens/admin/OrderListScreen";
 import ProductListScreen from "./screens/admin/ProductListScreen";
+import ProductEditScreen from "./screens/admin/ProductEditScreen";
 
 const App = () => {
   return (
@@ -48,6 +49,7 @@ const App = () => {
               <Route path="/admin/orderlist" element={<OrderListScreen />} />
               <Route path="/admin/productlist" element={<ProductListScreen />} />
               <Route path="/admin/userlist" element={<UserList />} />
+              <Route path="/admin/product/:id" element={<ProductEditScreen />} />
             </Route>
 
           </Routes>
