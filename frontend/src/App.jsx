@@ -2,7 +2,7 @@ import { Container } from "react-bootstrap";
 import "./assets/styles/bootstrap.custom.css";
 import "./assets/styles/index.css";
 import Header from "./components/Header";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Router } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import Footer from "./components/Footer";
@@ -17,10 +17,11 @@ import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import AdminRoutes from "./components/AdminRoutes";
-import UserList from "./screens/admin/UserListScreen";
 import OrderListScreen from "./screens/admin/OrderListScreen";
 import ProductListScreen from "./screens/admin/ProductListScreen";
 import ProductEditScreen from "./screens/admin/ProductEditScreen";
+import UserListScreen from "./screens/admin/UserListScreen";
+import UserEditScreen from "./screens/admin/UserEditScreen";
 
 const App = () => {
   return (
@@ -48,8 +49,9 @@ const App = () => {
             <Route path="" element={<AdminRoutes />}>
               <Route path="/admin/orderlist" element={<OrderListScreen />} />
               <Route path="/admin/productlist" element={<ProductListScreen />} />
-              <Route path="/admin/userlist" element={<UserList />} />
+              <Route path="/admin/userlist" element={<UserListScreen />} />
               <Route path="/admin/product/:id" element={<ProductEditScreen />} />
+              <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
             </Route>
 
           </Routes>

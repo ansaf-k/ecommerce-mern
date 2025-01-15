@@ -26,8 +26,8 @@ const ProductListScreen = () => {
     try {
       await deleteProduct(id).unwrap();
       toast.success("Product Deleted");
-    } catch (deleteErr) {
-      toast.error(deleteErr?.data?.message || deleteErr.error);
+    } catch (error) {
+      toast.error(error?.data?.message || deleteErr.error);
     }
   }
 

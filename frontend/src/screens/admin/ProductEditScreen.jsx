@@ -30,8 +30,6 @@ const ProductEditScreen = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
-            console.log(productId);
-
             await updateProduct({
                 name,
                 price,
