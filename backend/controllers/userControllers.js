@@ -91,12 +91,10 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 const getUsers = asyncHandler(async (req, res) => {
     const users = await User.find();
     res.json(users);
-    console.log("ak");
 });
 
 const getUserById = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
-    console.log(user);
 
     if (user) {
         return res.json(user);
@@ -122,6 +120,17 @@ const updateUser = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("User not found");
     }
+});
+
+const deleteUsers = asyncHandler(async (req, res) => {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (user) {
+        res.json('User deleted successfully');
+    } else {
+        res.status(404);
+        throw new Error("User not found");
+    }
+    
 })
 
-export { registerUser, authUser, logout, updateUserProfile, getUsers, getUserById, updateUser };
+export { registerUser, authUser, logout, updateUserProfile, getUsers, getUserById, updateUser, deleteUsers };
