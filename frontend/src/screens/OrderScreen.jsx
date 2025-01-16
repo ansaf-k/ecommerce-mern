@@ -1,13 +1,24 @@
-import { Card, Col, Image, ListGroup, Row } from "react-bootstrap";
+import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { Link, useParams } from "react-router-dom";
-import { useGetOrdersByIdQuery } from "../slice/orderApiSlice";
+import { useGetOrdersByIdQuery, useIsDeliveredMutation } from "../slice/orderApiSlice";
+import { toast } from "react-toastify";
 
 const OrderScreen = () => {
     const { id } = useParams();
 
-    const { isLoading, data: order, error } = useGetOrdersByIdQuery(id);
+
+    const { data: order, isLoading, error } = useGetOrdersByIdQuery(id);
+    const [isDelivered] = useIsDeliveredMutation();
+
+    const handleDelivered = async () => {
+        try {
+            await isDelivered(id).unwrap();
+        } catch (error) {
+            toast.error(error?.data?.message)
+        }
+    }
 
     return isLoading ? (
         <Loader />
@@ -116,6 +127,9 @@ const OrderScreen = () => {
                                     <Col>Total</Col>
                                     <Col>${order.totalPrice}</Col>
                                 </Row>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Button onClick={() => handleDelivered()}>Mark as Delivered</Button>
                             </ListGroup.Item>
                             {/* PAY ORDER PLACEHOLDER */}
                             {/* {MARK AS DELIVERED PLACEHOLDER} */}

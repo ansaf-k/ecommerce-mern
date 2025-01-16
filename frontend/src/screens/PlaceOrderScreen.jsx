@@ -3,7 +3,7 @@ import CheckoutSteps from '../components/CheckOutStep';
 import Message from '../components/Message';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCreateOrdersMutation } from '../slice/orderApiSlice';
+import { useCreateOrdersMutation, useOrderToPaidMutation } from '../slice/orderApiSlice';
 import Loader from '../components/Loader';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -18,24 +18,41 @@ const PlaceOrderScreen = () => {
     const cart = useSelector((state) => state.cart)
 
     const [createOrder, { error, isLoading }] = useCreateOrdersMutation();
+    const [orderToPaid] = useOrderToPaidMutation()
 
     const placeOrderHandler = async () => {
-        try {
-            const res = await createOrder({
-                cartItems: cart.cartItems,
-                shippingAddress: cart.shippingAddress,
-                paymentMethod: cart.paymentMethod,
-                itemsPrice: cart.itemsPrice,
-                taxPrice: cart.taxPrice,
-                totalPrice: cart.totalPrice,
-                shippingPrice: cart.shippingPrice,
-            }).unwrap();
-            dispatch(clearCartItem());
-            navigate(`/order/${res._id}`)
-        }
-        catch (error) {
-            toast.error(error?.data?.message)
-        }
+        var options = {
+            key: "rzp_test_HZlSHqpedcWyNI", // Enter the Key ID generated from the Dashboard
+            key_secret: "2pf1puJi6Uif1vA2rz9F0xDK",
+            amount: parseInt(cart.totalPrice * 100), // Amount is in paise
+            currency: "INR",
+            name: "Acme Corp",              //your business name
+            description: "Test Transaction",            //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            handler: async function (response) {
+                const paymentId = response.razorpay_payment_id;
+
+                try {
+                    const res = await createOrder({
+                        cartItems: cart.cartItems,
+                        shippingAddress: cart.shippingAddress,
+                        paymentMethod: cart.paymentMethod,
+                        paymentResult: paymentId,
+                        itemsPrice: cart.itemsPrice,
+                        taxPrice: cart.taxPrice,
+                        totalPrice: cart.totalPrice,
+                        shippingPrice: cart.shippingPrice,
+                    }).unwrap();
+                    dispatch(clearCartItem());
+                    await orderToPaid(res._id);
+                    navigate(`/order/${res._id}`)
+                }
+                catch (error) {
+                    toast.error(error?.data?.message)
+                }
+            },
+        };
+        const pay = new window.Razorpay(options);
+        pay.open();
     };
 
     useEffect(() => {
@@ -78,7 +95,7 @@ const PlaceOrderScreen = () => {
                                             <Row>
                                                 <Col md={1}>
                                                     <Image
-                                                        src={item.image}
+                                                        src={`http://localhost:5000${item?.image}`}
                                                         alt={item.name}
                                                         fluid
                                                         rounded

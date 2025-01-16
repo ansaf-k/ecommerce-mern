@@ -1,5 +1,5 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
-import Product from "../model/productModel.js";
+import { Product } from "../model/productModel.js";
 
 const getProducts = asyncHandler(async (req, res, next) => {
     const products = await Product.find();
@@ -81,7 +81,37 @@ const deleteProduct = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Product not found");
     }
-})
+});
+
+const productReviews = asyncHandler(async (req, res, next) => {
+    const { rating, comment } = req.body;
+    const product = await Product.findById(req.body.id);
+    if (product) {
+        const existingReview = await product.reviews.find((item) => item.user.toString() === req.user._id.toString());
+
+        if (existingReview) {
+            res.status(400);
+            throw new Error("You have already reviewed this product");
+        }
+
+        const review = {
+            name: req.user.name,
+            rating: Number(rating),
+            comment,
+            user: req.user._id,
+        };
+        product.reviews.push(review);
+        product.numReviews = product.reviews.length;
+        product.rating =
+            product.reviews.reduce((acc, current) => acc + current.rating, 0) /
+            product.reviews.length;
+        await product.save();
+        res.status(201).json({ message: "Review added successfully" });
+    } else {
+        res.status(404);
+        throw new Error("Product not found");
+    }
+});
 
 
-export { getProducts, createProduct, getProductsById, updateProduct, deleteProduct }
+export { getProducts, createProduct, getProductsById, updateProduct, deleteProduct, productReviews }

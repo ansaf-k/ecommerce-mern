@@ -70,6 +70,7 @@ const productSchema = mongoose.Schema(
     }
 );
 
-const Product = mongoose.model("Product",productSchema);
+export const Product = mongoose.model("Product", productSchema);
 
-export default Product;
+// export default Product;
+// export {Review};
