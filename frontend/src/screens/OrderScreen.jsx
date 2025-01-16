@@ -4,17 +4,20 @@ import Message from "../components/Message";
 import { Link, useParams } from "react-router-dom";
 import { useGetOrdersByIdQuery, useIsDeliveredMutation } from "../slice/orderApiSlice";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const OrderScreen = () => {
     const { id } = useParams();
 
-
-    const { data: order, isLoading, error } = useGetOrdersByIdQuery(id);
+    const { userInfo } = useSelector((state) => state.auth);
+    const { data: order, isLoading, error, refetch } = useGetOrdersByIdQuery(id);
     const [isDelivered] = useIsDeliveredMutation();
 
     const handleDelivered = async () => {
         try {
             await isDelivered(id).unwrap();
+            toast.success("Order delivered");
+            refetch()
         } catch (error) {
             toast.error(error?.data?.message)
         }
@@ -76,7 +79,7 @@ const OrderScreen = () => {
                                             <Row>
                                                 <Col md={1}>
                                                     <Image
-                                                        src={item.image}
+                                                        src={`http://localhost:5000${item.image}`}
                                                         alt={item.name}
                                                         fluid
                                                         rounded
@@ -128,9 +131,12 @@ const OrderScreen = () => {
                                     <Col>${order.totalPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
-                            <ListGroup.Item>
-                                <Button onClick={() => handleDelivered()}>Mark as Delivered</Button>
-                            </ListGroup.Item>
+                            {
+                                userInfo?.isAdmin &&
+                                <ListGroup.Item>
+                                    <Button onClick={() => handleDelivered()}>Mark as Delivered</Button>
+                                </ListGroup.Item>
+                            }
                             {/* PAY ORDER PLACEHOLDER */}
                             {/* {MARK AS DELIVERED PLACEHOLDER} */}
                         </ListGroup>

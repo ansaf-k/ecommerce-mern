@@ -68,13 +68,15 @@ const getOrdersById = asyncHandler(async (req, res) => {
 });
 
 const updateDelivered = asyncHandler(async (req, res) => {
-
-    const order = await Order.findById(req.body.id);
-
+    console.log('id', req.params.id);
+    const order = await Order.findById(req.params.id);
+    
     if (order) {
         order.isDelivered = true;
-        order.deliveredAt = Date.now();
+        order.deliveredAt = new Date();
         await order.save();
+        console.log("order",order);
+        res.json({message:"good"})
     } else {
         res.status(404);
         throw new Error("Order Not Found");

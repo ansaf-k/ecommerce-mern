@@ -8,33 +8,40 @@ const orderApi = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data
             }),
+            invalidatesTags: ['Orders'],
         }),
         getOrdersById: build.query({
             query: (id) => ({
                 url: `/api/orders/${id}`,
             }),
+            providesTags: ['Orders'],
         }),
         getMyOrders: build.query({
             query: () => ({
                 url: `/api/orders/mine`,
             }),
+            providesTags: ['Orders'],
         }),
         getOrders: build.query({
             query: () => ({
                 url: `/api/orders`,
             }),
+            providesTags: ['Orders'],
         }),
         isDelivered: build.mutation({
             query: (id) => ({
                 url: `/api/orders/${id}`,
-                method: "PATCH",
+                method: "PUT",
+                body:id
             }),
+            invalidatesTags: ['Orders'],
         }),
         orderToPaid: build.mutation({
             query: (id) => ({
                 url: `/api/orders/${id}/pay`,
                 method: "PUT",
             }),
+            invalidatesTags: ['Orders'],
         }),
     }),
 })
