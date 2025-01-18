@@ -2,11 +2,11 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import { Product } from "../model/productModel.js";
 
 const getProducts = asyncHandler(async (req, res) => {
-    const pageSize = 2;
+    const pageSize = 1;
     const page = Number(req.query.pageNumber) || 1;
 
     const keywordCondition = req.query.keyword
-        ? { name: { $regex: req.query.keyword, $options: "i" } }
+        ? { name: { $regex: req.query.keyword, $options: "i" } } //$regex: where values match a specified regular expression, $options: 
         : {};
 
     const count = await Product.countDocuments({...keywordCondition}); //take the count the database of products
