@@ -6,6 +6,7 @@ import { useLogoutMutation } from "../slice/userApiSlice";
 import { Logout } from "../slice/authSlice";
 import { toast } from "react-toastify";
 import { resetCart } from "../slice/cartSlice";
+import SearchBox from "./SearchBox";
 
 const Header = () => {
 
@@ -34,6 +35,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
+              <SearchBox />
               <Nav.Link as={Link} to="/cart">
                 <FaShoppingCart /> Cart
                 {cartItems.length > 0 && (
